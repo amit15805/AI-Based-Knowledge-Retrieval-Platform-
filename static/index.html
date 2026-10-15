@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge Retrieval Platform</title>
+<link rel="stylesheet" href="/static/style.css?v=5">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="status-dot" id="statusDot"></span>
+    <h1>Knowledge Retrieval Platform</h1>
+  </div>
+  <div class="badge" id="pipelineBadge">Multi-Agent RAG Pipeline Active</div>
+</header>
+
+<main class="content">
+  <aside class="kb-panel">
+    <h2>Knowledge Base</h2>
+    <div id="dropZone" class="drop-zone">
+      <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.csv" hidden>
+      <p>Drag &amp; drop a file here</p>
+      <p class="drop-sub">or</p>
+      <label for="fileInput" class="file-btn">Choose File</label>
+      <p id="fileName" class="file-name">No file chosen</p>
+      <button id="ingestBtn" class="ingest-btn">Ingest &amp; Analyze</button>
+    </div>
+    <div id="kbStatus" class="kb-status">No document uploaded yet. System using baseline knowledge base.</div>
+
+    <h3 class="kb-subhead">Uploaded Documents</h3>
+    <div id="docList" class="doc-list">
+      <p class="empty-note">No documents indexed yet.</p>
+    </div>
+  </aside>
+
+  <section class="chat-panel">
+    <div id="chatLog" class="chat-log">
+      <div class="msg system">
+        👋 System initialized. Upload PDF, DOCX, TXT or CSV documents, or query existing sources directly.
+        Voice input and text-to-speech are enabled.
+      </div>
+    </div>
+
+    <div class="input-bar">
+      <button id="micBtn" class="mic-btn" title="Voice input">🎙️</button>
+      <input type="text" id="queryInput" placeholder="Enter factual, procedural, or comparative query…">
+      <button id="submitBtn" class="submit-btn">Submit</button>
+    </div>
+    <label class="tts-toggle">
+      <input type="checkbox" id="ttsToggle" checked> Read answers aloud (TTS)
+    </label>
+  </section>
+
+  <aside class="transparency-panel">
+    <div class="panel-header">
+      <h2>Transparency &amp; Analysis Panel</h2>
+      <span id="panelState" class="panel-state">IDLE</span>
+    </div>
+
+    <div class="confidence-block">
+      <div class="confidence-label-row">
+        <span>System Grounding Confidence</span>
+        <span id="confidenceValue">0%</span>
+      </div>
+      <div class="confidence-bar-track">
+        <div id="confidenceBarFill" class="confidence-bar-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="sources-block">
+      <h3>Retrieved Sources &amp; Attributions</h3>
+      <div id="sourcesList" class="sources-list">
+        <p class="empty-note">No retrieved chunks. Submit a query to display semantic matches.</p>
+      </div>
+    </div>
+
+    <div class="analytics-block">
+      <div class="analytics-block-header">
+        <h3>Query Analytics</h3>
+        <button id="openDashboardBtn" class="dashboard-link-btn">Full Dashboard →</button>
+      </div>
+      <div id="analyticsSummary" class="analytics-summary">
+        <p class="empty-note">No queries logged yet.</p>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<!-- Milestone 4 / M4.1: Query Analytics & Knowledge Gap Dashboard -->
+<div id="analyticsModal" class="modal-overlay" hidden>
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h2>Query Analytics &amp; Knowledge Gap Dashboard</h2>
+      <button id="closeDashboardBtn" class="modal-close">✕</button>
+    </div>
+
+    <div class="dash-filters">
+      <label>Query type
+        <select id="filterQueryType"><option value="all">All</option></select>
+      </label>
+      <label>Confidence
+        <select id="filterConfidence">
+          <option value="all">All</option>
+          <option value="high">High (≥60%)</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low (&lt;35%)</option>
+        </select>
+      </label>
+      <label>Time range
+        <select id="filterDays">
+          <option value="">All time</option>
+          <option value="1">Last 24h</option>
+          <option value="7">Last 7 days</option>
+          <option value="30">Last 30 days</option>
+        </select>
+      </label>
+      <label>Document / domain
+        <select id="filterDocument"><option value="all">All</option></select>
+      </label>
+      <button id="applyFiltersBtn" class="ingest-btn dash-apply-btn">Apply</button>
+    </div>
+
+    <div class="dash-summary-grid" id="dashSummaryGrid"></div>
+
+    <div class="dash-charts">
+      <div class="dash-chart">
+        <h4>Query Type Breakdown</h4>
+        <div id="chartQueryType" class="bar-chart"></div>
+      </div>
+      <div class="dash-chart">
+        <h4>Confidence Distribution</h4>
+        <div id="chartConfidence" class="bar-chart"></div>
+      </div>
+    </div>
+
+    <div class="dash-chart">
+      <h4>Detected Knowledge Gaps <span class="dash-subtle">(repeated low-confidence / unanswered themes)</span></h4>
+      <div id="chartGaps" class="bar-chart"></div>
+    </div>
+
+    <div class="dash-recent">
+      <h4>Recent Queries</h4>
+      <table class="dash-table" id="recentTable">
+        <thead><tr><th>Time</th><th>Query</th><th>Type</th><th>Confidence</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js?v=5"></script>
+</body>
+</html>

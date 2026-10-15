@@ -1,0 +1,24 @@
+{
+  "_readme": [
+    "EDIT THIS FILE to match the documents you uploaded. Milestone 4 requires at least 3 distinct domains.",
+    "domain: any label you like (e.g. 'python_notes', 'rag_paper', 'hr_policy'). Used for grouping + memory isolation.",
+    "query: the question to ask.",
+    "expected_type: factual | procedural | comparative | ambiguous  (checks Query Understanding routing).",
+    "answerable: true if the answer IS in your documents, false if it is NOT (tests unavailable-information handling).",
+    "expected_keywords: words/phrases that should appear in the retrieved evidence when answerable (any one match counts).",
+    "The examples below assume 'PYTHON PROGRAMMING NOTES.pdf' and a RAG research paper are uploaded. Replace with your own."
+  ],
+  "tests": [
+    {"domain": "python_notes", "query": "What is Python?", "expected_type": "factual", "answerable": true, "expected_keywords": ["python"]},
+    {"domain": "python_notes", "query": "How do I define a function in Python?", "expected_type": "procedural", "answerable": true, "expected_keywords": ["def", "function"]},
+    {"domain": "python_notes", "query": "What is the difference between a list and a tuple?", "expected_type": "comparative", "answerable": true, "expected_keywords": ["list", "tuple"]},
+    {"domain": "python_notes", "query": "Tell me more", "expected_type": "ambiguous", "answerable": false, "expected_keywords": []},
+    {"domain": "python_notes", "query": "What is the capital of France?", "expected_type": "factual", "answerable": false, "expected_keywords": []},
+
+    {"domain": "rag_paper", "query": "What does RAG stand for?", "expected_type": "factual", "answerable": true, "expected_keywords": ["retrieval-augmented", "retrieval augmented"]},
+    {"domain": "rag_paper", "query": "How does the RAG pipeline work step by step?", "expected_type": "procedural", "answerable": true, "expected_keywords": ["retriev", "generat"]},
+    {"domain": "rag_paper", "query": "Compare RAG with fine-tuning", "expected_type": "comparative", "answerable": true, "expected_keywords": ["fine-tuning", "fine tuning"]},
+    {"domain": "rag_paper", "query": "Explain it", "expected_type": "ambiguous", "answerable": false, "expected_keywords": []},
+    {"domain": "rag_paper", "query": "What is the boiling point of water?", "expected_type": "factual", "answerable": false, "expected_keywords": []}
+  ]
+}
